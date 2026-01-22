@@ -1,8 +1,10 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
+
 export const createReview = async (reviewData) => {
    const res = await fetch(
-       `${process.env.NEXT_AUTH_URL}/api/reviews?${getParams}`, {
+       `${process.env.NEXT_AUTH_URL}/api/reviews`, {
               method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -13,6 +15,8 @@ export const createReview = async (reviewData) => {
        if(!res.ok){
           throw new Error("Failed to create review");
        }
+
+       revalidateTag("reviews");
        return res.json();
 
     };
@@ -28,7 +32,15 @@ export const getAllReviews = async (getParams) => {
    console.log(searchParam);
 
    const res = await fetch(
-       `${process.env.NEXT_AUTH_URL}/api/reviews?${searchParam}`
+       `${process.env.NEXT_AUTH_URL}/api/reviews?${searchParam}`,
+       {
+         cache: "force-cache",
+         next: {
+            tags: ["reviews"],
+            tevalidate: 60, // seconds
+
+         }
+       }
    );
 //    await new Promise((resolve) =>
 //        setTimeout(() => {
