@@ -1,3 +1,4 @@
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import UserContextProvider, { UserContext } from "@/context/UserContextProvider";
@@ -27,9 +28,7 @@ export default function RootLayout({ children }) {
       >
         {/* <Navbar/> */}
         <div>
-
           <Provider>  {children}</Provider>
-
         </div>
         {/* <Footer/> */}
       </body>

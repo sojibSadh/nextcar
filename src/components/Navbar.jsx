@@ -6,10 +6,13 @@ import logo from '@/assets/img/logo2.png'
 import Image from 'next/image'
 import Container from './Container'
 import { UserContext } from '@/context/UserContextProvider'
+import { signIn, useSession } from 'next-auth/react'
 
 function Navbar() {
-    const {user} = use(UserContext);
-    console.log(user);
+    const { user } = use(UserContext);
+    const { data: session, status } = useSession()
+    console.log(session, status);
+
     return (
         <div className='bg-purple-400'>
             <Container>
@@ -32,9 +35,11 @@ function Navbar() {
                         </ul>
                     </div>
                     {
-                        user?
-                        <Link href={"/dashboard"}> <button> Dashboard </button> </Link> :
-                        <Link href={"/login"}> <button> Login </button> </Link>
+                        user ?
+                            <Link href={"/dashboard"}> <button> Dashboard </button> </Link> :
+                            <button onClick={() => signIn()}>
+                                Logins
+                            </button>
                     }
                 </div>
             </Container>
