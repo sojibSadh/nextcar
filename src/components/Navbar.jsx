@@ -6,7 +6,7 @@ import logo from '@/assets/img/logo2.png'
 import Image from 'next/image'
 import Container from './Container'
 import { UserContext } from '@/context/UserContextProvider'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 
 function Navbar() {
     const { user } = use(UserContext);
@@ -35,11 +35,29 @@ function Navbar() {
                         </ul>
                     </div>
                     {
-                        user ?
-                            <Link href={"/dashboard"}> <button> Dashboard </button> </Link> :
-                            <button onClick={() => signIn()}>
-                                Logins
-                            </button>
+                        status === "loading" ? (
+                            <button>  Loading... </button>
+                        ) : session?.user?.email ? (
+                            <div>
+                                <button onClick={() => signOut({ callbackUrl: '/' })} className='bg-red-500 px-4 py-2 rounded-lg text-white font-semibold hover:bg-red-600 transition'>
+                                    Sign Out
+                                </button>
+                                <Link href={"/dashboard"}> <button> Dashboard </button> </Link>
+                            </div>
+
+                        ) :
+                            (
+                                <div>
+                                    <button onClick={() => signIn()} className='bg-green-500 px-4 py-2 rounded-lg text-white font-semibold hover:bg-green-600 transition'>
+                                        Sign In
+                                    </button>
+                                    <Link href={"/signup"}> <button className='ml-2 bg-blue-500 px-4 py-2 rounded-lg text-white font-semibold hover:bg-blue-600 transition'> Register </button> </Link>
+                                </div>
+
+
+                            )
+
+
                     }
                 </div>
             </Container>
