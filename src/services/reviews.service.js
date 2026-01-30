@@ -45,7 +45,7 @@ export const getAllReviews = async (getParams) => {
 //    await new Promise((resolve) =>
 //        setTimeout(() => {
 //            resolve();
-//        }, 2000)
+//        }, 3000)
 //    );
    const data = await res.json();
    return data;
